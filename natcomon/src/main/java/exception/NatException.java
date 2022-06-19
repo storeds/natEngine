@@ -24,8 +24,8 @@ public class NatException extends RuntimeException {
      * @param message
      * @param cause
      */
-    public NatException(String message, Throwable cause) {
-        super(message, cause);
+    public NatException(NatError message, Throwable cause) {
+        super(String.valueOf(message), cause);
     }
 
     /**

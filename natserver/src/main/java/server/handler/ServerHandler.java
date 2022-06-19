@@ -208,7 +208,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                             // 创建远程处理的handler，用于数据的处理
                             RemoteHandler remoteHandler = new RemoteHandler();
                             remoteHandler.setValue(serverHandler, port, clientKey);
-
                             ChannelPipeline pipeline = channel.pipeline();
 
                             // 添加handler 解码器 编码器 远程连接handler

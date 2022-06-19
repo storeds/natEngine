@@ -1,4 +1,4 @@
-package loadbalancer;
+package client.loadbalancer;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
 

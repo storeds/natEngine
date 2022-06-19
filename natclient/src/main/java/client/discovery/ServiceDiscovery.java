@@ -1,4 +1,4 @@
-package discovery;
+package client.discovery;
 
 import java.net.InetSocketAddress;
 

@@ -1,11 +1,11 @@
-package discovery;
+package client.discovery;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import enumeration.NatError;
 import exception.NatException;
-import loadbalancer.LoadBalancer;
-import loadbalancer.RandomLoadBalancer;
+import client.loadbalancer.LoadBalancer;
+import client.loadbalancer.RandomLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import utile.NacosUtil;
 

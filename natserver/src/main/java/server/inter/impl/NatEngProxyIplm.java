@@ -1,6 +1,6 @@
 package server.inter.impl;
 
-import server.inter.NatEngineProxy;
+import server.inter.NatEngProxy;
 
 /**
  * @program: NatEngine
@@ -8,7 +8,7 @@ import server.inter.NatEngineProxy;
  * @create: 2022-06-20 21:40
  * @description:  外部代理类
  **/
-public class NatEngineProxyIplm  implements NatEngineProxy {
+public class NatEngProxyIplm implements NatEngProxy {
     @Override
     public void start() {
 

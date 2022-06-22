@@ -6,7 +6,7 @@ package server.inter;
  * @create: 2022-06-20 21:39
  * @description:
  **/
-public interface NatEngineProxy {
+public interface NatEngProxy {
 
     /**
      * 添加启动方法

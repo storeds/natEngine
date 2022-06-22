@@ -1,3 +1,6 @@
 # Default ignored files
 /workspace.xml
-/.idea
+.idea
+../natclient/target
+../natcomon/target
+../natserver/target

@@ -1,0 +1,35 @@
+# 代理客户端配置
+
+# 代理服务器host
+server-host: 127.0.0.1
+server-port: 9879
+
+# 本地服务器host
+local-host: 127.0.0.1
+
+# 代理客户端认证密钥client-key
+client-key: your client-key
+
+config:
+  # server-port：代理服务器外部访问端口
+  # client-port：代理客户端实际使用端口
+  # proxy-type： 采用的代理模式
+  # description：代理描述
+  #
+  # http代理
+  - server-port: 9980
+    client-port: 8080
+    proxy-type: tcp
+    description: http代理
+  #
+  # ssh代理
+  - server-port: 9922
+    client-port: 22
+    proxy-type: tcp
+    description: ssh代理
+  #
+  # 远程桌面代理
+  - server-port: 9989
+    client-port: 3389
+    proxy-type: tcp
+    description: 远程桌面代理

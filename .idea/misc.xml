@@ -5,7 +5,20 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/natEngineServerUI/uIcommon/pom.xml" />
+        <option value="$PROJECT_DIR$/natEngineServerUI/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/NatEngineServerUI/pom.xml" />
+        <option value="$PROJECT_DIR$/admin/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/comon/pom.xml" />
+        <option value="$PROJECT_DIR$/natEngineServerUI/admin/pom.xml" />
+        <option value="$PROJECT_DIR$/natEngineServerUI/pom.xml" />
+        <option value="$PROJECT_DIR$/serverUI/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">

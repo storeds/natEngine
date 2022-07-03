@@ -1,6 +1,6 @@
 package server.handler;
 
-import config.ConfigParser;
+
 import enumeration.MessageType;
 import enumeration.NatError;
 import exception.NatException;
@@ -15,7 +15,9 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import message.NatMessage;
 import org.apache.http.nio.protocol.Pipelined;
+import org.springframework.stereotype.Component;
 import server.ServerBootStrapHelper;
+import server.config.ConfigParser;
 import server.reposity.ClientService;
 import server.reposity.impl.ClientServiceIpm;
 
@@ -317,7 +319,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             public boolean matches(Channel channel) {
                 if (channel.id().asLongText().equals(message.getMetaData().get("channelId"))){
                     // TODO 后续添加日志
-                    String clientKey = (String) message.getMetaData().get("clientKey");
+                    String clientKey = ((Integer) message.getMetaData().get("clientKey")).toString();
                     return true;
                 }
                 return false;

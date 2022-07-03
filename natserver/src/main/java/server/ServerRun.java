@@ -2,7 +2,7 @@ package server;
 
 import codec.CommonDecoder;
 import codec.CommonEncoder;
-import config.ConfigParser;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -11,6 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import server.config.ConfigParser;
 import server.handler.HeartBeatHandler;
 import server.handler.ServerHandler;
 
@@ -55,7 +56,8 @@ public class ServerRun {
                 ChannelPipeline pipeline = socketChannel.pipeline();
                 // 添加粘包粘包处理器
                 pipeline.addLast(new IdleStateHandler(READER_IDLE_TIME,WRITER_IDLE_TIME,ALL_IDLE_TIME, TimeUnit.SECONDS));
-                pipeline.addLast(new LengthFieldBasedFrameDecoder(MAX_FRAME_LENGTH,LENGTH_FIELD_OFFSET,LENGTH_FIELD_LENGTH,LENGTH_ADJUSTMENT,INITIAL_BYTES_TO_STRIP));
+                pipeline.addLast(new LengthFieldBasedFrameDecoder(MAX_FRAME_LENGTH,LENGTH_FIELD_OFFSET
+                        ,LENGTH_FIELD_LENGTH,LENGTH_ADJUSTMENT,INITIAL_BYTES_TO_STRIP));
                 // 添加解码器和编码器
                 pipeline.addLast(new CommonDecoder());
                 pipeline.addLast(new CommonEncoder());

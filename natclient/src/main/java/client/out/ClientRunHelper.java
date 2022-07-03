@@ -1,10 +1,10 @@
 package client.out;
 
+import client.config.ConfigParser;
 import client.heandler.ClientHandler;
 import client.heandler.HeartBeatHandler;
 import codec.CommonDecoder;
 import codec.CommonEncoder;
-import config.ConfigParser;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

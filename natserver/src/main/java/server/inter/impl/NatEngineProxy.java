@@ -15,10 +15,7 @@ import java.lang.reflect.Method;
 public class NatEngineProxy  implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
         log.info("启动后端服务");
-
-
         return null;
     }
 }

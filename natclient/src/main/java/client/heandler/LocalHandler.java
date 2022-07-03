@@ -1,6 +1,6 @@
 package client.heandler;
 
-import config.ConfigParser;
+import client.config.ConfigParser;
 import enumeration.MessageType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

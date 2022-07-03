@@ -1,7 +1,8 @@
 package client.heandler;
 
+import client.config.ConfigParser;
 import client.out.ClientBootStrapHelper;
-import config.ConfigParser;
+
 import enumeration.MessageType;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;

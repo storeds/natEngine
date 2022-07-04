@@ -18,7 +18,7 @@ window.onload=function () {
                     var res = JSON.parse(xhr.responseText);
                     if (res) {
                         // 登录成功，刷新父页面
-                        parent.window.location.href = "index";
+                        parent.window.location.href = "/natEngine/index";
                     }else {
                         placeholder.innerText = "用户名或密码错误";
                     }

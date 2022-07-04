@@ -61,6 +61,7 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
         metaData.put("channelId",remoteChannelId);
         metaData.put("clientKey", ConfigParser.get("client-key"));
 
+        // 设置消息
         message.setMetaData(metaData);
         message.setData(data);
 

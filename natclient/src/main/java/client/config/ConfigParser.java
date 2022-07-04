@@ -22,7 +22,7 @@ public class ConfigParser {
 
     public ConfigParser() {
         try {
-            //定位当前文件夹路径(zrp)
+            //定位当前文件夹路径
             String dir = System.getProperty("user.dir");
             // 获取配置
             File file = new File(dir+File.separator+"client.yaml");

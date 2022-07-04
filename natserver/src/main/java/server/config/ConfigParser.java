@@ -23,9 +23,10 @@ public class ConfigParser {
     public ConfigParser() {
         try {
             //IDEA中运行
-            File file = getProjectConfigFile();
+            String dir = System.getProperty("user.dir");
+            // 获取配置
+            File file = new File(dir+File.separator+"server.yaml");
             InputStream in = new FileInputStream(file);
-
             Yaml yaml = new Yaml();
             config = (Map<String,Object>) yaml.load(in);
             portArr = (ArrayList<Map<String, Object>>) get("config");
@@ -49,7 +50,7 @@ public class ConfigParser {
      */
     public File getServerConfigFile() {
         String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        classPath = classPath.substring(5,classPath.indexOf("zrp-server.jar"))+"zrp-server.yaml";
+        classPath = classPath.substring(5,classPath.indexOf("server.jar"))+"server.yaml";
         return new File(classPath);
     }
 

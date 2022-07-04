@@ -2,6 +2,7 @@ package server.reposity.impl;
 
 import server.reposity.ClientService;
 
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ClientServiceIpm implements ClientService {
 
     /** 确保安全的写时复制list存储授权码 **/
-     private static final CopyOnWriteArrayList reposityList = new CopyOnWriteArrayList();
+     public static List<Object> REPOSITY_LIST = new CopyOnWriteArrayList<>();
 
 
 
@@ -25,7 +26,7 @@ public class ClientServiceIpm implements ClientService {
     @Override
     public boolean checkClientKey(String clientKey) {
         // 判断是不是拥有这个授权
-        boolean ret = reposityList.contains(clientKey);
+        boolean ret = REPOSITY_LIST.contains(clientKey);
         return ret;
     }
 }

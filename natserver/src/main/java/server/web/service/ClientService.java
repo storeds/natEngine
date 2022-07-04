@@ -2,9 +2,11 @@ package server.web.service;
 
 import org.springframework.stereotype.Service;
 
+import server.reposity.impl.ClientServiceIpm;
 import server.web.entity.Client;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -17,6 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class ClientService {
 
+    /** 存储客户授权码 **/
     private static List<Client> clientlist =  new CopyOnWriteArrayList<Client>();
 
 
@@ -27,6 +30,7 @@ public class ClientService {
      */
     public boolean addClient(Client client){
         clientlist.add(client);
+        ClientServiceIpm.REPOSITY_LIST = Collections.singletonList(clientlist);
         return true;
     }
 
@@ -37,6 +41,7 @@ public class ClientService {
      */
     public boolean deleteClient(int id){
         clientlist.removeIf(client -> client.getId() == id);
+        ClientServiceIpm.REPOSITY_LIST = Collections.singletonList(clientlist);
         return true;
     }
 

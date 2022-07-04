@@ -1,14 +1,14 @@
 # 代理客户端配置
 
 # 代理服务器host
-server-host: 94.74.110.135
+server-host: 192.168.96.3
 server-port: 9876
 
 # 本地服务器host
 local-host: 127.0.0.1
 
 # 代理客户端认证密钥client-key
-client-key:
+client-key: 123456
 
 config:
   # server-port：代理服务器外部访问端口

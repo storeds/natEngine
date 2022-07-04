@@ -22,10 +22,7 @@ import server.reposity.ClientService;
 import server.reposity.impl.ClientServiceIpm;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static enumeration.MessageType.TYPE_DISCONNECTED;
@@ -240,7 +237,42 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         // 添加返回数据
         res.setType(type.getType());
         res.setMetaData(metaData);
+        res.setRequestId(getRandom());
         ctx.writeAndFlush(res);
+    }
+
+    /** 计数器 **/
+    private static volatile int  count = 0;
+    private static int lastTime = 0;
+
+    /** 返回唯一值 **/
+    public int getRandom() throws Exception {
+        // 根据时间来获取随机值
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+        int concurrent = 0;
+        // 通过生成当前值
+        if (hour < 10) {
+            concurrent = hour * 10000000 + minute + 100000 + second + 1000;
+        }else {
+            concurrent = hour * 1000000 + minute + 100000 + second + 1000;
+        }
+        if (lastTime > concurrent){
+            throw new Exception("出现时钟回滚异常");
+        }
+
+        // 计数器++
+        if (count == 999) {
+            count = 0;
+        }else {
+            count++;
+        }
+
+        // 生成随机的
+        int res = concurrent + count;
+        return res;
     }
 
     /**

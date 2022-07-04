@@ -7,6 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import message.NatMessage;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -56,6 +57,9 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
         NatMessage message = new NatMessage();
         message.setType(MessageType.TYPE_DATA.getType());
 
+        // 添加消息id
+        message.setRequestId(getRandom());
+
         // 创建元数据
         HashMap<String,Object> metaData = new HashMap<>();
         metaData.put("channelId",remoteChannelId);
@@ -65,12 +69,47 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
         message.setMetaData(metaData);
         message.setData(data);
 
+
+
         // 收到内网服务器响应后返回给服务端
         this.clientHandler.getCtx().writeAndFlush(message);
         log.info("{} 收到本地 --  {} 的数据，数据量为 {} 字节" ,this.getClass(), ctx.channel().remoteAddress(), data.length);
     }
 
 
+    /** 计数器 **/
+    private static volatile int  count = 0;
+    private static int lastTime = 0;
+
+    /** 返回唯一值 **/
+    public int getRandom() throws Exception {
+        // 根据时间来获取随机值
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+        int concurrent = 0;
+        // 通过生成当前值
+        if (hour < 10) {
+            concurrent = hour * 10000000 + minute + 100000 + second + 1000;
+        }else {
+            concurrent = hour * 1000000 + minute + 100000 + second + 1000;
+        }
+        if (lastTime > concurrent){
+            throw new Exception("出现时钟回滚异常");
+        }
+
+        // 计数器++
+        if (count == 999) {
+            count = 0;
+        }else {
+            count++;
+        }
+
+        // 生成随机的
+        int res = concurrent + count;
+        return res;
+    }
 
     /**
      * 连接异常

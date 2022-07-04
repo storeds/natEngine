@@ -14,10 +14,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import message.NatMessage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,6 +51,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         this.ctx = ctx;
         // 创建消息 添加消息类型
         NatMessage message = new NatMessage();
+        message.setRequestId(getRandom());
         message.setType(MessageType.TYPE_REGISTER.getType());
         // 获取授权码
         HashMap<String,Object> metaData = new HashMap<>();
@@ -71,6 +69,39 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         message.setMetaData(metaData);
         ctx.writeAndFlush(message);
         log.info("{} -- 与服务器连接建立成功，正在进行注册...", this.getClass());
+    }
+
+    /** 计数器 **/
+    private static volatile int  count = 0;
+    private static int lastTime = 0;
+
+    public int getRandom() throws Exception {
+        // 根据时间来获取随机值
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+        int concurrent = 0;
+        // 通过生成当前值
+        if (hour < 10) {
+            concurrent = hour * 10000000 + minute + 100000 + second + 1000;
+        }else {
+            concurrent = hour * 1000000 + minute + 100000 + second + 1000;
+        }
+        if (lastTime > concurrent){
+            throw new Exception("出现时钟回滚异常");
+        }
+
+        // 计数器++
+        if (count == 999) {
+            count = 0;
+        }else {
+            count++;
+        }
+
+        // 生成随机的
+        int res = concurrent + count;
+        return res;
     }
 
     /**

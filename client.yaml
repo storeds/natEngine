@@ -1,14 +1,14 @@
 # 代理客户端配置
 
 # 代理服务器host
-server-host: 127.0.0.1
-server-port: 9879
+server-host: 192.168.96.3
+server-port: 9876
 
 # 本地服务器host
 local-host: 127.0.0.1
 
 # 代理客户端认证密钥client-key
-client-key: your client-key
+client-key: 123456
 
 config:
   # server-port：代理服务器外部访问端口
@@ -18,7 +18,7 @@ config:
   #
   # http代理
   - server-port: 9980
-    client-port: 8080
+    client-port: 80
     proxy-type: tcp
     description: http代理
   #

@@ -1,6 +1,6 @@
 package server.handler;
 
-import config.ConfigParser;
+
 import enumeration.MessageType;
 import enumeration.NatError;
 import exception.NatException;
@@ -15,15 +15,14 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import message.NatMessage;
 import org.apache.http.nio.protocol.Pipelined;
+import org.springframework.stereotype.Component;
 import server.ServerBootStrapHelper;
+import server.config.ConfigParser;
 import server.reposity.ClientService;
 import server.reposity.impl.ClientServiceIpm;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static enumeration.MessageType.TYPE_DISCONNECTED;
@@ -37,17 +36,8 @@ import static enumeration.MessageType.TYPE_DISCONNECTED;
 @Slf4j
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private static ServerHandler serverHandler;
-
-
-    /**
-     * 在spring加载过程中赋值
-     */
-    @PostConstruct
-    public void init(){
-        serverHandler = this;
-    }
-
+    /** 创建一个自己来使用 **/
+    private static ServerHandler serverHandler = new ServerHandler();
 
     /** 客户端的连接池 **/
     private static ConcurrentHashMap<String,Integer> clients = new ConcurrentHashMap<>();
@@ -95,6 +85,45 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         log.info("{}--有客户端建立连接，客户端地址为:{}", this.getClass(), ctx.channel().remoteAddress());
     }
 
+    /**
+     * 数据读取和转发
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 内网穿透的消息
+        NatMessage message = (NatMessage) msg;
+
+        // TODO 后续优化为策略模式
+        // 判断消息的类型
+        if (message.getType().equals(MessageType.TYPE_REGISTER.getType())) {
+            // 客户端进行注册
+            processRegister(message);
+        }else if ( isRegister ) {
+            // 客户端请求信息
+            switch (Objects.requireNonNull(MessageType.getByValue(message.getType()))){
+                // 客户端请求断开连接
+                case TYPE_DISCONNECTED :
+                    processDisconnect(message);
+                    break;
+                // 心跳，不做处理
+                case TYPE_KEEPALIVE :
+                    break;
+                // 处理数据
+                case TYPE_DATA :
+                    processData(message);
+                    break;
+                default:
+                    log.warn("非法请求");
+            }
+        } else {
+            log.warn("{} -- 有未授权的客户端尝试发送消息，断开连接", this.getClass());
+            ctx.close();
+        }
+
+    }
 
     /**
      *  连接中断
@@ -135,45 +164,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
 
-    /**
-     * 数据读取和转发
-     * @param ctx
-     * @param msg
-     * @throws Exception
-     */
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        // 内网穿透的消息
-        NatMessage message = (NatMessage) msg;
 
-        // TODO 后续优化为策略模式
-        // 判断消息的类型
-        if (message.getType().equals(MessageType.TYPE_REGISTER.getType())) {
-            // 客户端进行注册
-            processRegister(message);
-        }else if ( isRegister ) {
-            // 客户端请求信息
-            switch (Objects.requireNonNull(MessageType.getByValue(message.getType()))){
-                // 客户端请求断开连接
-                case TYPE_DISCONNECTED :
-                    processDisconnect(message);
-                    break;
-                // 心跳，不做处理
-                case TYPE_KEEPALIVE :
-                    break;
-                // 处理数据
-                case TYPE_DATA :
-                    processData(message);
-                    break;
-                default:
-                    log.warn("非法请求");
-            }
-        } else {
-            log.warn("{} -- 有未授权的客户端尝试发送消息，断开连接", this.getClass());
-            ctx.close();
-        }
-
-    }
 
 
     /**
@@ -246,7 +237,42 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         // 添加返回数据
         res.setType(type.getType());
         res.setMetaData(metaData);
+        res.setRequestId(getRandom());
         ctx.writeAndFlush(res);
+    }
+
+    /** 计数器 **/
+    private static volatile int  count = 0;
+    private static int lastTime = 0;
+
+    /** 返回唯一值 **/
+    public int getRandom() throws Exception {
+        // 根据时间来获取随机值
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+        int concurrent = 0;
+        // 通过生成当前值
+        if (hour < 10) {
+            concurrent = hour * 10000000 + minute + 100000 + second + 1000;
+        }else {
+            concurrent = hour * 1000000 + minute + 100000 + second + 1000;
+        }
+        if (lastTime > concurrent){
+            throw new Exception("出现时钟回滚异常");
+        }
+
+        // 计数器++
+        if (count == 999) {
+            count = 0;
+        }else {
+            count++;
+        }
+
+        // 生成随机的
+        int res = concurrent + count;
+        return res;
     }
 
     /**
@@ -317,7 +343,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             public boolean matches(Channel channel) {
                 if (channel.id().asLongText().equals(message.getMetaData().get("channelId"))){
                     // TODO 后续添加日志
-                    String clientKey = (String) message.getMetaData().get("clientKey");
+                    String clientKey = ((Integer) message.getMetaData().get("clientKey")).toString();
                     return true;
                 }
                 return false;

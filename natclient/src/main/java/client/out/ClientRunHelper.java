@@ -1,10 +1,10 @@
 package client.out;
 
+import client.config.ConfigParser;
 import client.heandler.ClientHandler;
 import client.heandler.HeartBeatHandler;
 import codec.CommonDecoder;
 import codec.CommonEncoder;
-import config.ConfigParser;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -36,6 +36,7 @@ public class ClientRunHelper {
     private static final EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     public void start(){
+        // 创建客户端启动 并获取服务端ip和端口
         ClientBootStrapHelper clientBootStrapHelper = new ClientBootStrapHelper();
         String serverHost = (String) ConfigParser.get("server-host");
         int serverPort = (Integer) ConfigParser.get("server-port");
@@ -47,7 +48,8 @@ public class ClientRunHelper {
                 ChannelPipeline pipeline = channel.pipeline();
 
                 pipeline.addLast(new IdleStateHandler(READER_IDLE_TIME,WRITER_IDLE_TIME,ALL_IDLE_TIME, TimeUnit.SECONDS));
-                pipeline.addLast(new LengthFieldBasedFrameDecoder(MAX_FRAME_LENGTH,LENGTH_FIELD_OFFSET,LENGTH_FIELD_LENGTH,LENGTH_ADJUSTMENT,INITIAL_BYTES_TO_STRIP));
+                pipeline.addLast(new LengthFieldBasedFrameDecoder(MAX_FRAME_LENGTH,LENGTH_FIELD_OFFSET
+                        ,LENGTH_FIELD_LENGTH,LENGTH_ADJUSTMENT,INITIAL_BYTES_TO_STRIP));
                 pipeline.addLast(new CommonDecoder());
                 pipeline.addLast(new CommonEncoder());
                 pipeline.addLast(new ClientHandler());

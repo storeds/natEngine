@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户模块</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+</head>
+<body>
+<div class="container" id="container">
+
+    <!-- 添加授权弹出框（Modal） -->
+    <div class="modal" id="clientKeyModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="clientKeyModalLabel">添加授权</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="username" class="col-form-label">客户名:</label>
+                            <input type="text" class="form-control" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientKey" class="col-form-label">授权码:</label>
+                            <input type="text" class="form-control" id="clientKey">
+                        </div>
+                        <div class="form-group">
+                            <label for="stopTime" class="col-form-label">有效期(天):</label>
+                            <input type="text" class="form-control" id="stopTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment" class="col-form-label">备注:</label>
+                            <input type="text" class="form-control" id="comment">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel">关闭</button>
+                    <button type="button" class="btn btn-primary" id="submit">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<script type="application/javascript" rel="script" src="/js/client.js"></script>
+</html>

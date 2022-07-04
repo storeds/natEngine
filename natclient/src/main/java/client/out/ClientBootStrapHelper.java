@@ -25,13 +25,16 @@ public class ClientBootStrapHelper {
         }
 
         try {
+            // bootstrap
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(workerGroup);
 
+            // 常用配置 SO_KEEPALIVE两小时后发送tcp探测报文  添加channelInitializer
             bootstrap.channel(NioSocketChannel.class);
             bootstrap.option(ChannelOption.SO_KEEPALIVE,true);
             bootstrap.handler(channelInitializer);
 
+            // 连接并作异步处理
             channel = bootstrap.connect(host,port).sync().channel();
             channel.closeFuture().addListener((ChannelFutureListener) future ->{
                 channel.deregister();

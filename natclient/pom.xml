@@ -34,5 +34,8 @@
 
     </dependencies>
 
+    <build>
+        <finalName>client</finalName>
+    </build>
 
 </project>

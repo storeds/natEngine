@@ -61,7 +61,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ArrayList<Integer> serverPortArr = new ArrayList<>();
         for (Map<String,Object> item : ConfigParser.getPortArray()){
             serverPortArr.add((Integer) item.get("server-port"));
-            //保存端口映射关系
+            // 保存端口映射关系
             portMap.put((Integer) item.get("server-port"),(Integer) item.get("client-port"));
         }
 
@@ -216,7 +216,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         };
 
         String localhost = (String) ConfigParser.get("local-host");
-        //这里根据portMap将远程服务器端口作为key获取对应的本地端口
+        // 这里根据portMap将远程服务器端口作为key获取对应的本地端口
         int remotePort = (Integer) message.getMetaData().get("remotePort");
         int localPort = portMap.get(remotePort);
         localHelper.start(localGroup,channelInitializer,localhost,localPort);
@@ -231,7 +231,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // 获取channelId
         String channelId = message.getMetaData().get("channelId").toString();
         LocalHandler handler = localHandlerMap.get(channelId);
-        // 无就移除
+        // 有就移除
         if (handler!=null){
             handler.getLocalCtx().close();
             localHandlerMap.remove(channelId);

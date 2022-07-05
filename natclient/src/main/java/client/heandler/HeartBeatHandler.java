@@ -26,7 +26,7 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
     private static final  Integer HEART_BEAT = MessageType.TYPE_KEEPALIVE.getType();
 
     /**
-     * 写超时事件发生会使用会调用这个方法
+     * 用户事件
      * @param ctx      上下文
      * @param evt      事件
      * @throws Exception

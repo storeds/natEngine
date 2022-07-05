@@ -52,6 +52,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // 创建消息 添加消息类型
         NatMessage message = new NatMessage();
         message.setRequestId(getRandom());
+        // 注册
         message.setType(MessageType.TYPE_REGISTER.getType());
         // 获取授权码
         HashMap<String,Object> metaData = new HashMap<>();

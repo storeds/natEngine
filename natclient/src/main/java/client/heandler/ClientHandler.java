@@ -42,7 +42,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 建立连接初始化
+     * 建立连接初始化 激活
      * @param ctx
      * @throws Exception
      */
@@ -52,6 +52,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // 创建消息 添加消息类型
         NatMessage message = new NatMessage();
         message.setRequestId(getRandom());
+        // 注册
         message.setType(MessageType.TYPE_REGISTER.getType());
         // 获取授权码
         HashMap<String,Object> metaData = new HashMap<>();
@@ -73,7 +74,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     /** 计数器 **/
     private static volatile int  count = 0;
-    private static int lastTime = 0;
+    private static volatile int lastTime = 0;
 
     public int getRandom() throws Exception {
         // 根据时间来获取随机值
@@ -91,12 +92,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         if (lastTime > concurrent){
             throw new Exception("出现时钟回滚异常");
         }
+        lastTime = concurrent;
 
         // 计数器++
         if (count == 999) {
             count = 0;
         }else {
-            count++;
+            count = count + 1;
         }
 
         // 生成随机的
@@ -145,7 +147,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 连接中断
+     * 连接中断 断开
      * @param ctx
      * @throws Exception
      */

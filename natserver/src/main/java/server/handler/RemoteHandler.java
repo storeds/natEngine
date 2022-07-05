@@ -19,8 +19,6 @@ import java.util.HashMap;
 @Slf4j
 public class RemoteHandler extends ChannelInboundHandlerAdapter {
 
-//    private static RemoteHandler remoteHandler = new RemoteHandler();
-
 
 
     /** 服务处理handler   远程的端口   客户端的授权码 **/

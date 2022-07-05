@@ -45,7 +45,7 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 读取内网服务器请求和数据
+     * 收到对方数据后触发，发送数据到服务端
      * @param ctx
      * @param msg
      * @throws Exception
@@ -71,7 +71,7 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
 
 
 
-        // 收到内网服务器响应后返回给服务端
+        // 收到
         this.clientHandler.getCtx().writeAndFlush(message);
         log.info("{} 收到本地 --  {} 的数据，数据量为 {} 字节" ,this.getClass(), ctx.channel().remoteAddress(), data.length);
     }

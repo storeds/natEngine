@@ -18,9 +18,6 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
     /** 添加工作组 **/
     private EventLoopGroup workerGroup = null;
 
-    public HeartBeatHandler() {
-    }
-
     public HeartBeatHandler(EventLoopGroup workerGroup) {
         this.workerGroup = workerGroup;
     }

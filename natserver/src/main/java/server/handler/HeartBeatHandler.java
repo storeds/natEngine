@@ -15,7 +15,7 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     /** 读超时次数，超过指定次数表示客户端离线或者网络不稳定，主动断开客户端连接 **/
     private int waitCount = 1;
-    private static final int MAX_WAIT_COUNT = 3;
+    private static final int MAX_WAIT_COUNT = 15;
 
     /** 心跳的时间 **/
     private static final long MAX_TIME_MILLIS_LIMIT = 60*1000;
@@ -28,7 +28,7 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 出现超时会调用该方法，超时触发
+     * 用户事件触发
      * @param ctx
      * @param evt
      * @throws Exception

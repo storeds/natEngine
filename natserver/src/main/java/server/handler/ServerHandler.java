@@ -75,7 +75,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 连接时触发下面的方法
+     * 连接时触发下面的方法 激活
      * @param ctx
      * @throws Exception
      */

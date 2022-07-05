@@ -38,11 +38,6 @@ public class ServerBootStrapHelper {
 
             // 获取chanel进行处理
             Channel channel = serverBootstrap.bind(serverHost,serverPort).sync().channel();
-            channel.closeFuture().addListener((ChannelFutureListener) future ->{
-                //channel关闭，将channel从workerGroup取消注册
-                channel.deregister();
-                channel.close();
-            });
         }catch (Exception e) {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

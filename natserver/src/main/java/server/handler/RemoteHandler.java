@@ -24,7 +24,7 @@ public class RemoteHandler extends ChannelInboundHandlerAdapter {
     /** 服务处理handler   远程的端口   客户端的授权码 **/
     private ServerHandler serverHandler = null;
     private int remotePort;
-    private String clientKey;
+    private String clientKey = "";
 
     /**
      * 添加值
@@ -39,7 +39,7 @@ public class RemoteHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 连接初始化建立连接
+     * 连接初始化建立连接 设置端口注册
      * @param ctx
      * @throws Exception
      */
@@ -98,18 +98,12 @@ public class RemoteHandler extends ChannelInboundHandlerAdapter {
         message.setMetaData(metaData);
 
         // 数据不为空将数据添加进去
-        if (data!=null){
+        if (data != null){
             message.setData(data);
         }
 
         // 将数据发送出去
         this.serverHandler.getCtx().writeAndFlush(message);
-
-//        // 记录日志，只记录数据传输的请求
-//        if (remoteHandler != null && MessageType.TYPE_DATA.getType() == type.getType()) {
-//            // TODO 添加登录日志
-//
-//        }
 
     }
 

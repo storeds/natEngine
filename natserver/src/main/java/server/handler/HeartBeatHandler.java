@@ -28,7 +28,7 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 用户事件触发
+     * 用户事件触发 如果出现超时事件会被触发
      * @param ctx
      * @param evt
      * @throws Exception

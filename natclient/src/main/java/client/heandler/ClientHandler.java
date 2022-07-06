@@ -198,6 +198,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ClientHandler clientHandler = this;
         ClientBootStrapHelper localHelper = new ClientBootStrapHelper();
 
+        // 与本地服务器建立连接
         ChannelInitializer channelInitializer = new ChannelInitializer() {
 
             @Override
@@ -232,7 +233,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         String channelId = message.getMetaData().get("channelId").toString();
         LocalHandler handler = localHandlerMap.get(channelId);
         // 有就移除
-        if (handler!=null){
+        if (handler != null){
             handler.getLocalCtx().close();
             localHandlerMap.remove(channelId);
         }

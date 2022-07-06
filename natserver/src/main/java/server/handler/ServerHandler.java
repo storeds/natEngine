@@ -188,7 +188,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             ArrayList<Integer> ports = (ArrayList<Integer>)  message.getMetaData().get("ports");
             try {
 
-                // 循环遍历端口并添加
+                // 循环遍历端口并添加 与本地服务进行连接
                 for (int port : ports) {
 
                     ChannelInitializer channelInitializer = new ChannelInitializer() {

@@ -16,6 +16,13 @@ public class ClientBootStrapHelper {
 
     private Channel channel = null;
 
+    /**
+     * 启动
+     * @param workerGroup           工作组
+     * @param channelInitializer    channel初始化
+     * @param host                  连接的ip
+     * @param port                  连接的端口
+     */
     public void start(EventLoopGroup workerGroup, ChannelInitializer channelInitializer,
                       String host, int port){
 
@@ -34,7 +41,7 @@ public class ClientBootStrapHelper {
             bootstrap.option(ChannelOption.SO_KEEPALIVE,true);
             bootstrap.handler(channelInitializer);
 
-            // 连接并作异步处理
+            // 等待异步连接完成
             channel = bootstrap.connect(host,port).sync().channel();
             channel.closeFuture().addListener((ChannelFutureListener) future ->{
                 channel.deregister();

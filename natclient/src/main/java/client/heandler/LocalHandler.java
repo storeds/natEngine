@@ -45,7 +45,7 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 收到对方数据后触发，发送数据到服务端
+     * 收到对方数据后触发，发送数据到本地服务端
      * @param ctx
      * @param msg
      * @throws Exception
@@ -68,8 +68,6 @@ public class LocalHandler extends ChannelInboundHandlerAdapter {
         // 设置消息
         message.setMetaData(metaData);
         message.setData(data);
-
-
 
         // 收到
         this.clientHandler.getCtx().writeAndFlush(message);
